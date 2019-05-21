@@ -1,14 +1,25 @@
-const curry = function(fn) {
+const sub_curry = function() {
     const args = [].slice.call(arguments, 1);
     return function() {
-        const newArgs = args.concat([].slice.call(arguments));
-        return fn.apply(this, newArgs);
+        return fn.apply(this, args.concat([].slice.call(arguments)));
+    }
+};
+
+const curry = (fn, length) => {
+    length = length || fn.length;
+    const slice = Array.prototype.slice;
+    return function() {
+        if (arguments.length < length) {
+            const combined = [fn].concat(slice.call(arguments));
+            return curry(sub_curry.apply(this, combined), length - arguments.length);
+        } else {
+            return fn.apply(this, arguments);
+        }
     }
 }
 
-function add(a, b) {
-    console.log(a + b);
-}
+const fn = curry(function(a, b, c) {
+    return [a, b, c];
+});
 
-const addCurry = curry(add, 1, 2);
-addCurry();
+fn('a', 'b')('c');
