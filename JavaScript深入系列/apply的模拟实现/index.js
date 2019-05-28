@@ -1,5 +1,5 @@
 Function.prototype.apply2 = function(context) {
-    var context = context || window;
+    var context = context || window; // 当传参是null时，指向全局
     context.fn = this; // 先取出方法，接下来取参数
     var args = Array.prototype.slice.call(arguments, 1);
     let res = undefined;
