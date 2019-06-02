@@ -17,7 +17,7 @@
 
 /* 第二版 */
 Function.prototype.call2 = function(context) {
-    const context = context || window;
+    context = context || window;
     context.fn = this;
     const arg = []; // 接受参数
     for (let i = 1; i < arguments.length; i++) {
