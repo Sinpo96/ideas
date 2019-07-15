@@ -72,7 +72,7 @@ console.log(unique(array)); */
 /* 第六种： Map --- 主要是查找快速 */
 function unique(array) {
     const mapCollect = new Map();
-    array.filter((val, index, arr) => {
+    array.filter((val) => {
         return !mapCollect.has(val) && mapCollect.set(val, 1);
     });
     return mapCollect;
