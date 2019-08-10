@@ -1,4 +1,11 @@
 /*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-06 08:56:26
+ * @LastEditTime: 2019-08-10 18:42:32
+ * @LastEditors: Please set LastEditors
+ */
+/*
  * 一.New的实现原理 
  *  1.创建一个空对象，构造函数中的this指向这个空对象
  *  2.这个新对象被执行[[原型]]连接
@@ -84,3 +91,52 @@
 //     delete context.fn;
 //     return res;
 // }
+
+/**
+ * 五：柯里化的实现
+ */
+// const curry = (fn, ...args) =>
+//     args.length < fn.length ? (
+//         (...arguments) => curry(fn, ...args, ...arguments)
+//     ) : (
+//         fn(...args)
+//     );
+
+/**
+ * 六： 如何使得a == 1 && a == 2 && a == 3为true
+ */
+// ------ 第一种方法，使用对象的[Symbol.toPrimitive]接口和闭包，保存一个变量
+// let a = {
+//     [Symbol.toPrimitive]: function(hint) {
+//         let i = 1;
+//         return function() {
+//             return i++;
+//         }
+//     }()
+// }
+
+// ------ 第二种方式，使用Object.defineproperty或者new Proxy()进行数据劫持
+// Object.defineProperty(window, 'a', {
+//     get: function() {
+//         let i = 1;
+//         // 之所以这里使用闭包，是因为这里的this指向了window
+//         return function() {
+//             return i++;
+//         }
+//     }()
+// });
+/* -------------------------------------------------------------------- */
+// let a = new Proxy({}, {
+//     i: 1,
+//     get: function() {
+//         return () => this.i++;
+//     }
+// });
+
+// ------ 第三种方式，重写array的join方法，并利用隐式类型转换的方式将数组转为字符串，字符串与number比较时在进行转换
+// const a = [1, 2, 3];
+// a.join = a.shift;
+
+// console.log(a == 1);
+// console.log(a == 2);
+// console.log(a == 3);
