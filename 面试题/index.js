@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-10 18:42:32
+ * @LastEditTime: 2019-08-12 00:26:47
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -140,3 +140,24 @@
 // console.log(a == 1);
 // console.log(a == 2);
 // console.log(a == 3);
+
+/**
+ * 七、继承的几种方式
+ *      1.原型链继承
+ */
+// 1.原型链继承
+// function first() {
+//     this.firstArr = [];
+// }
+
+// function second() {
+//     this.secondArr = [];
+// }
+
+// second.prototype = new first(); // new的原理就是原型的链接
+
+// const third = new second(); // 这两个new second共用了first的原型方法，会互相影响
+// third.firstArr.push('fromThird'); // 实际上这里最终找到了first的原型方法
+// const fourth = new second();
+// fourth.firstArr.push('fromFourth');
+// console.log(fourth.firstArr);
