@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-12 00:26:47
+ * @LastEditTime: 2019-08-14 22:57:27
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -144,9 +144,15 @@
 /**
  * 七、继承的几种方式
  *      1.原型链继承
+ *      2.借用构造函数
+ *      3.原型组合式继承（原型链+借用构造函数）
+ *      4.原型式继承
+ *      5.寄生式继承
+ *      6.寄生组合式继承
  */
 // 1.原型链继承
 // function first() {
+//     this.a = 'a';
 //     this.firstArr = [];
 // }
 
@@ -156,8 +162,83 @@
 
 // second.prototype = new first(); // new的原理就是原型的链接
 
-// const third = new second(); // 这两个new second共用了first的原型方法，会互相影响
+// const third = new second(); // 这两个new second共用了first的原型方法，只有！！！引用类型的变量才会进行共享
+// third.a = 'third';
 // third.firstArr.push('fromThird'); // 实际上这里最终找到了first的原型方法
 // const fourth = new second();
+// // fourth.a = 'fourth';
 // fourth.firstArr.push('fromFourth');
-// console.log(fourth.firstArr);
+// console.log(fourth);
+
+// 2.借用构造函数
+// function first(name) {
+//     this.name = name;
+//     this.firstArr = [];
+//     this.firstArr.push(name);
+// }
+
+// function second(name) {
+//     first.call(this, name);
+// }
+
+// const third = new second('fromThird');
+// const fourth = new second('fromFourth');
+// console.log(fourth);
+
+// 3.原型组合式继承（原型链+借用构造函数）
+// function first(name) {
+//     this.name = name;
+//     this.firstArr = [];
+//     this.firstArr.push(name);
+// }
+
+// function second(name) {
+//     first.call(this, name); // 这一步借用构造函数，将构造函数中的对象和属性变为自身所拥有，自身有的便不会去原型链上进行查找
+// }
+
+// second.prototype = new first(); // 原型连接
+// second.prototype.constructor = second; // 纠正下构造函数的指向
+
+// const third = new second('fromThird');
+// third.firstArr.push('haha');
+// const fourth = new second('fromFourth');
+// console.log(third);
+
+// 4.原型式继承
+// 基本思想：在 object() 函数内部，先创建一个临时性的构造函数，然后将传入的对象作为这个构造函数的原型，最后返回了这个临时类型的一个新实例，从本质上讲，object() 对传入的对象执行了一次浅拷贝。
+// function object(o) {
+//     const F = function() {
+
+//     };
+//     F.prototype = o;
+//     return new F();
+// }
+// console.log(object({ a: 'first' }));
+
+// 使用Object.create也能实现这种继承
+// const first = {
+//     a: 'first',
+//     firstArr: []
+// }
+
+// const second = Object.create(first);
+// second.firstArr.push('second');
+// console.log(second);
+
+// 5.寄生式继承
+// function createAnother(original) {
+//     const clone = Object(original); // 通过调用函数创建一个新的对象
+//     clone.sayHi = () => console.log('hi');
+//     return clone;
+// }
+
+// const person = {
+//     name: 'first',
+//     hobbies: ['second']
+// }
+
+// const person2 = createAnother(person);
+// person2.sayHi();
+
+// 6.寄生组合式继承
+// ---------------------------------没懂---------------------------------------
