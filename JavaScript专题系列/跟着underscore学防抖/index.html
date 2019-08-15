@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-06-18 08:57:57
+ * @LastEditTime: 2019-08-15 09:38:58
+ * @LastEditors: Please set LastEditors
+ -->
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 
@@ -29,29 +36,51 @@
             console.log(e);
         };
 
-        container.onmousemove = debounce(getUserAction, true);
+        container.onmousemove = debounce(getUserAction, false, 1000);
 
         /**
          * @description: 
          * @param {type} immediate 立即执行
          * @return: 
          */
-        function debounce(func, immediate = false) {
-            var timer = null;
+        // function debounce(func, immediate = false) {
+        //     var timer = null;
+        //     return function() {
+        //         const self = this;
+        //         clearTimeout(timer);
+        //         if (immediate) {
+        //             //说明要立即执行了
+        //             var callNow = !timer;
+        //             if (callNow) result = func.apply(self, arguments)
+        //             timer = setTimeout(function() {
+        //                 timer = null;
+        //             }, 1000)
+        //         } else {
+        //             timer = setTimeout(() => {
+        //                 func.apply(self, arguments);
+        //             }, 1000);
+        //         }
+        //     }
+        // }
+
+        function debounce(fun, immediate, wait = 1000) {
+            let timer = null;
             return function() {
                 const self = this;
-                clearTimeout(timer);
+                timer && clearTimeout(timer);
                 if (immediate) {
-                    //说明要立即执行了
-                    var callNow = !timer;
-                    if (callNow) result = func.apply(self, arguments)
-                    timer = setTimeout(function() {
+                    // 立即执行一次，停止触发多少秒之后才能再次触发
+                    if (!timer) {
+                        fun.apply(self, arguments);
+                    }
+                    timer = setTimeout(() => {
                         timer = null;
-                    }, 1000)
+                        // 这一步的意思是wait的时间过后才置为null，才能继续触发
+                    }, wait);
                 } else {
                     timer = setTimeout(() => {
-                        func.apply(self, arguments);
-                    }, 1000);
+                        fun.apply(self, arguments);
+                    }, wait);
                 }
             }
         }

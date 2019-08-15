@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-14 22:57:27
+ * @LastEditTime: 2019-08-15 09:38:12
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -242,3 +242,28 @@
 
 // 6.寄生组合式继承
 // ---------------------------------没懂---------------------------------------
+
+/**
+ * 八. 防抖
+ */
+function debounce(fun, immediate, wait = 1000) {
+    let timer = null;
+    return function() {
+        const self = this;
+        timer && clearTimeout(timer);
+        if (immediate) {
+            // 立即执行一次，停止触发多少秒之后才能再次触发
+            if (!timer) {
+                fun.apply(self, arguments);
+            }
+            timer = setTimeout(() => {
+                timer = null;
+                // 这一步的意思是wait的时间过后才置为null，才能继续触发
+            }, wait);
+        } else {
+            timer = setTimeout(() => {
+                fun.apply(self, arguments);
+            }, wait);
+        }
+    }
+}
