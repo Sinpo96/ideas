@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-15 09:38:12
+ * @LastEditTime: 2019-08-18 22:35:33
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -245,25 +245,96 @@
 
 /**
  * 八. 防抖
+ * @description  每次触发都会重置时间
  */
-function debounce(fun, immediate, wait = 1000) {
-    let timer = null;
-    return function() {
-        const self = this;
-        timer && clearTimeout(timer);
-        if (immediate) {
-            // 立即执行一次，停止触发多少秒之后才能再次触发
-            if (!timer) {
-                fun.apply(self, arguments);
-            }
-            timer = setTimeout(() => {
-                timer = null;
-                // 这一步的意思是wait的时间过后才置为null，才能继续触发
-            }, wait);
-        } else {
-            timer = setTimeout(() => {
-                fun.apply(self, arguments);
-            }, wait);
-        }
+// function debounce(func, wait, immediate) {
+//     let timeout = null;
+//     let result;
+
+//     const debounced = function() {
+//         // 存一下this
+//         const self = this;
+
+//         // 如果定时器存在，那么就清除定时器
+//         if (timeout) clearTimeout(timeout);
+
+//         // 判断是否传入立即执行的参数
+//         if (immediate) {
+//             // 如果定时器不存在
+//             if (!timeout) {
+//                 // 那么说明得立即执行一次(之所以写一个result，是因为如果函数有返回值，可能会需要)
+//                 result = func.apply(self, arguments);
+//             }
+//             // 不管定时器存不存在，都得重置定时器，好让它重新计时(这种写法属于有头无尾型的)
+//             timeout = setTimeout(() => {
+//                 timeout = null;
+//             }, wait);
+//         } else {
+//             // 这里是没设置立即执行一次的情况
+//             // 那么就重新设置定时器就好了
+//             timeout = setTimeout(() => {
+//                 func.apply(self, arguments);
+//             }, wait);
+//         }
+//         return result;
+//     }
+
+//     // 再给这个定时方法设定一个cancel方法用于取消防抖
+//     debounced.cancel = function() {
+//         clearTimeout(timeout);
+//         timeout = null;
+//     }
+
+//     return debounced;
+// }
+
+/**
+ * 九.节流
+ * @description  规定的单位时间内只会执行一次
+ * leading： false 表示禁用第一次执行
+ * trailing: false 表示禁用停止触发的回调
+ */
+function throttle(func, wait = 1000, options = {}) {
+    let timeout, context, args, result;
+    let previous = 0;
+    const { leading, trailing } = options;
+    const later = function() {
+        // 判断下是否需要第一次执行
+        previous = !leading ? 0 : +new Date();
+        timeout = null;
+        result = func.apply(context, args);
     }
+
+    const throttled = function() {
+        const now = +new Date();
+        if (!previous && !leading) {
+            // 第一次进入且禁用第一次执行
+            previous = now;
+        }
+        // 计算一下还需要等待执行的时间
+        const remaining = wait - (now - previous);
+        context = this;
+        args = arguments;
+        if (remaining <= 0 || remaining > wait) {
+            // 说明得执行了
+
+            // 先清除下定时器
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            previous = now;
+            result = func.apply(context, args);
+        } else if (!timeout && trailing) {
+            // 说明没有设置定时器且停止时触发一次func
+            timeout = setTimeout(later, remaining);
+        }
+        return result;
+    }
+
+    throttled.cancel = function() {
+        clearTimeout(timeout);
+        previous = 0;
+    }
+    return throttled;
 }
