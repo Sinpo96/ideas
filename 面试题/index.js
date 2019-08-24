@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-24 17:54:01
+ * @LastEditTime: 2019-08-24 19:49:34
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -420,3 +420,24 @@
 //     return Array.from(nMap.keys());
 // }
 // console.log(uniq(toBeUniq));
+
+/**
+ * 十二：JSONP
+ */
+function JSONP({ url, params, callback }) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        window[callback] = function(data) {
+                resolve(data);
+                document.body.removeChild(script);
+            }
+            // 回到偶函数加在请求地址上
+        params = {...params, callback };
+        const arrs = [];
+        for (const key in params) {
+            arrs.push(`${key}=${params[key]}`);
+        }
+        script.src = `${url}?${arrs.join('&')}`;
+        document.body.appendChild(script);
+    });
+}
