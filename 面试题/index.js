@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-18 22:35:33
+ * @LastEditTime: 2019-08-24 17:12:44
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -294,47 +294,86 @@
  * leading： false 表示禁用第一次执行
  * trailing: false 表示禁用停止触发的回调
  */
-function throttle(func, wait = 1000, options = {}) {
-    let timeout, context, args, result;
-    let previous = 0;
-    const { leading, trailing } = options;
-    const later = function() {
-        // 判断下是否需要第一次执行
-        previous = !leading ? 0 : +new Date();
-        timeout = null;
-        result = func.apply(context, args);
-    }
+// function throttle(func, wait = 1000, options = {}) {
+//     let timeout, context, args, result;
+//     let previous = 0;
+//     const { leading, trailing } = options;
+//     const later = function() {
+//         // 判断下是否需要第一次执行
+//         previous = !leading ? 0 : +new Date();
+//         timeout = null;
+//         result = func.apply(context, args);
+//     }
 
-    const throttled = function() {
-        const now = +new Date();
-        if (!previous && !leading) {
-            // 第一次进入且禁用第一次执行
-            previous = now;
-        }
-        // 计算一下还需要等待执行的时间
-        const remaining = wait - (now - previous);
-        context = this;
-        args = arguments;
-        if (remaining <= 0 || remaining > wait) {
-            // 说明得执行了
+//     const throttled = function() {
+//         const now = +new Date();
+//         if (!previous && !leading) {
+//             // 第一次进入且禁用第一次执行
+//             previous = now;
+//         }
+//         // 计算一下还需要等待执行的时间
+//         const remaining = wait - (now - previous);
+//         context = this;
+//         args = arguments;
+//         if (remaining <= 0 || remaining > wait) {
+//             // 说明得执行了
 
-            // 先清除下定时器
-            if (timeout) {
-                clearTimeout(timeout);
-                timeout = null;
-            }
-            previous = now;
-            result = func.apply(context, args);
-        } else if (!timeout && trailing) {
-            // 说明没有设置定时器且停止时触发一次func
-            timeout = setTimeout(later, remaining);
-        }
-        return result;
-    }
+//             // 先清除下定时器
+//             if (timeout) {
+//                 clearTimeout(timeout);
+//                 timeout = null;
+//             }
+//             previous = now;
+//             result = func.apply(context, args);
+//         } else if (!timeout && trailing) {
+//             // 说明没有设置定时器且停止时触发一次func
+//             timeout = setTimeout(later, remaining);
+//         }
+//         return result;
+//     }
 
-    throttled.cancel = function() {
-        clearTimeout(timeout);
-        previous = 0;
-    }
-    return throttled;
-}
+//     throttled.cancel = function() {
+//         clearTimeout(timeout);
+//         previous = 0;
+//     }
+//     return throttled;
+// }
+
+/**
+ * 十：数组扁平化
+ * 例：[1, [2, [3, [4]], 5]]
+ */
+// const toBeFlatten = [1, [2, [3, [4]], 5]];
+// 1.ES6的flat方法（depth ：提取嵌套数组的结构深度，默认为1，使用Math.pow(2, 53) - 1这个js能表示的最大数就能去除所有嵌套层级）
+// console.log(Array.prototype.flat.call(toBeFlatten, Math.pow(2, 53) - 1));
+
+// 2.reduce(递归调用)
+// function flatten(toBeFlatten) {
+//     return toBeFlatten.reduce((acc, cur) => {
+//         if (Array.isArray(cur)) {
+//             return acc.concat(flatten(cur));
+//         } else {
+//             return acc.concat(cur);
+//         }
+//     }, []);
+// }
+
+// 3. 使用stach无限反嵌套多层嵌套数组
+// function flatten(input) {
+//     const stack = [...input];
+//     const res = [];
+//     while (stack.length) {
+//         // 说明还没空
+//         // pop取出最后一个值
+//         const next = stack.pop();
+//         if (Array.isArray(next)) {
+//             // 如果还是数组，那就解构后再放进去
+//             stack.push(...next);
+//         } else {
+//             res.push(next);
+//         }
+//     }
+//     // 反转
+//     return res.reverse();
+// }
+// console.log(flatten(toBeFlatten));
