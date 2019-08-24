@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-08-24 17:12:44
+ * @LastEditTime: 2019-08-24 17:54:01
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -377,3 +377,46 @@
 //     return res.reverse();
 // }
 // console.log(flatten(toBeFlatten));
+
+/**
+ * 十一：数组去重
+ */
+// const toBeUniq = [1, 2, 3, 5, 3, 2];
+// 1.ES6的new Set集合
+// console.log(Array.from(new Set(toBeUniq)));
+
+// 2.indexOf
+// function uniq(Arr) {
+//     const res = [];
+//     Arr.map((val, index, arr) => {
+//         if (index != arr.indexOf(val)) {
+//             // 说明重复了
+//         } else {
+//             res.push(val);
+//         }
+//     });
+//     return res;
+// }
+
+// 3.reduce
+// function uniq(Arr) {
+//     return Arr.reduce((acc, val) => {
+//         if (!acc.includes(val)) {
+//             return acc.concat(val);
+//         } else {
+//             return acc;
+//         }
+//     }, []);
+// }
+
+// 4.Map对象
+// function uniq(Arr) {
+//     const nMap = new Map();
+//     Arr.map((val) => {
+//         if (!nMap.has(val)) {
+//             nMap.set(val, '');
+//         }
+//     });
+//     return Array.from(nMap.keys());
+// }
+// console.log(uniq(toBeUniq));
