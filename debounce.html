@@ -1,0 +1,48 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-02 09:31:15
+ * @LastEditTime: 2019-09-02 09:48:01
+ * @LastEditors: Please set LastEditors
+ -->
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>debounce</title>
+    <style>
+        #container {
+            width: 100%;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            color: #fff;
+            background-color: #444;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src='JavaScript笔试题/index.js'></script>
+    <script>
+        var count = 1;
+        var container = document.getElementById('container');
+
+        function getUserAction(e) {
+            container.innerHTML = count++;
+            console.log(e);
+        };
+
+        container.onmousemove = debounce({
+            func: getUserAction,
+            immediate: true,
+            interval: 1000
+        });
+    </script>
+</body>
+
+</html>
