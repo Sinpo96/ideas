@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-02 09:31:15
- * @LastEditTime: 2019-09-02 09:48:01
+ * @LastEditTime: 2019-09-03 10:06:52
  * @LastEditors: Please set LastEditors
  -->
 <!DOCTYPE html>
@@ -34,13 +34,13 @@
 
         function getUserAction(e) {
             container.innerHTML = count++;
-            console.log(e);
+            // console.log(e);
         };
 
-        container.onmousemove = debounce({
+        container.onmousemove = throttle({
             func: getUserAction,
-            immediate: true,
-            interval: 1000
+            tail: true,
+            wait: 1000
         });
     </script>
 </body>
