@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-09-02 09:06:35
+ * @LastEditTime: 2019-09-04 00:45:05
  * @LastEditors: Please set LastEditors
  */
 /*
@@ -23,7 +23,7 @@
 //     let res = constructor.apply(target, args);
 //     // 如果构造函数中么有返回其他对象
 //     if (res && (typeof res == 'object' || typeof res == 'function')) {
-//         return constructor;
+//         return res;
 //     }
 //     return target;
 // }

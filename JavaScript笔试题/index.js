@@ -2,7 +2,7 @@
  * @Description: JavaScript 笔试题
  * @Author: your name
  * @Date: 2019-09-02 09:07:13
- * @LastEditTime: 2019-09-03 22:59:07
+ * @LastEditTime: 2019-09-04 23:43:40
  * @LastEditors: Please set LastEditors
  */
 /**
@@ -85,3 +85,63 @@
 //         }
 //     }
 // }
+
+/**
+ * @description: 深克隆
+ * @param: parent  入参，要克隆的对象
+ */
+// 判断三种重点照顾的类型
+const isType = (obj, type = 'Array') => {
+    if (!obj) {
+        return false;
+    }
+    switch (type) {
+        case 'Array':
+            return type == Object.prototype.toString.call(obj) == '[Object Array]';
+        case 'RegExp':
+            return type == Object.prototype.toString.call(obj) == '[Object RegExp]';
+        case 'Date':
+            return type == Object.prototype.toString.call(obj) == '[Object Date]';
+        default:
+            return false;
+    }
+}
+
+// 开始克隆函数
+const clone = (parent) => {
+    // 维护两个循环引用的数组
+    const parents = [];
+    const children = [];
+    // 如果是null或者不是对象这种复杂数据类型，直接返回
+    if (typeof parent == null || typeof parent != 'object') {
+        return parent;
+    }
+    const _clone = () => {
+        let child, proto;
+        // 判断是否为数组
+        if (isType(parent, 'Array')) {
+            child = [];
+        } else if (isType(parent, 'RegExp')) {
+            child = new RegExp(parent);
+        } else if (isType(parent, 'Date')) {
+            child = new Date(parent.getTime());
+        } else {
+            proto = Object.getPrototypeOf(parent); // 获取原型链
+            child = Object.create(proto);
+        }
+
+        const index = parents.indexOf(parent);
+        if (index != -1) {
+            // 说明已经存在了，直接返回就行了
+            return parents[index];
+        }
+        parents.push(parent);
+        children.push(child);
+
+        for (const i in parent) {
+            child[i] = _clone(parent[i]);
+        }
+        return child;
+    }
+    return _clone(parent);
+}
