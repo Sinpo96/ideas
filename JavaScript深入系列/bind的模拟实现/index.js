@@ -1,4 +1,11 @@
-/** 注意，这里定义时不能使用箭头函数，如果使用，那么娶不到调用这个bind2的方法 */
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-05-30 09:25:43
+ * @LastEditTime: 2019-09-05 01:51:51
+ * @LastEditors: Please set LastEditors
+ */
+/** 注意，这里定义时不能使用箭头函数，如果使用，那么取不到调用这个bind2的方法 */
 Function.prototype.bind2 = function(context) {
     /* context 此时是foo */
     const self = this;
@@ -8,7 +15,7 @@ Function.prototype.bind2 = function(context) {
         /** 判断一下 */
         return self.call(this instanceof self ? this : context, ...args, ...arguments);
     };
-    middle.prototype = this.prototype;
+    middle.prototype = this.prototype; // 为了不影响原来的原型，做个中转
     fBound.prototype = new middle();
     return fBound;
 }

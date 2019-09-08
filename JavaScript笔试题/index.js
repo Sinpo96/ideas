@@ -2,7 +2,7 @@
  * @Description: JavaScript 笔试题
  * @Author: your name
  * @Date: 2019-09-02 09:07:13
- * @LastEditTime: 2019-09-04 23:43:40
+ * @LastEditTime: 2019-09-08 20:31:59
  * @LastEditors: Please set LastEditors
  */
 /**
@@ -91,57 +91,114 @@
  * @param: parent  入参，要克隆的对象
  */
 // 判断三种重点照顾的类型
-const isType = (obj, type = 'Array') => {
-    if (!obj) {
-        return false;
-    }
-    switch (type) {
-        case 'Array':
-            return type == Object.prototype.toString.call(obj) == '[Object Array]';
-        case 'RegExp':
-            return type == Object.prototype.toString.call(obj) == '[Object RegExp]';
-        case 'Date':
-            return type == Object.prototype.toString.call(obj) == '[Object Date]';
-        default:
-            return false;
-    }
-}
+// const isType = (obj, type = 'Array') => {
+//     if (!obj) {
+//         return false;
+//     }
+//     switch (type) {
+//         case 'Array':
+//             return type == Object.prototype.toString.call(obj) == '[Object Array]';
+//         case 'RegExp':
+//             return type == Object.prototype.toString.call(obj) == '[Object RegExp]';
+//         case 'Date':
+//             return type == Object.prototype.toString.call(obj) == '[Object Date]';
+//         default:
+//             return false;
+//     }
+// }
 
-// 开始克隆函数
-const clone = (parent) => {
-    // 维护两个循环引用的数组
-    const parents = [];
-    const children = [];
-    // 如果是null或者不是对象这种复杂数据类型，直接返回
-    if (typeof parent == null || typeof parent != 'object') {
-        return parent;
-    }
-    const _clone = () => {
-        let child, proto;
-        // 判断是否为数组
-        if (isType(parent, 'Array')) {
-            child = [];
-        } else if (isType(parent, 'RegExp')) {
-            child = new RegExp(parent);
-        } else if (isType(parent, 'Date')) {
-            child = new Date(parent.getTime());
-        } else {
-            proto = Object.getPrototypeOf(parent); // 获取原型链
-            child = Object.create(proto);
-        }
+// // 开始克隆函数
+// const clone = (parent) => {
+//     // 维护两个循环引用的数组
+//     const parents = [];
+//     const children = [];
+//     // 如果是null或者不是对象这种复杂数据类型，直接返回
+//     if (typeof parent == null || typeof parent != 'object') {
+//         return parent;
+//     }
+//     const _clone = () => {
+//         let child, proto;
+//         // 判断是否为数组
+//         if (isType(parent, 'Array')) {
+//             child = [];
+//         } else if (isType(parent, 'RegExp')) {
+//             child = new RegExp(parent);
+//         } else if (isType(parent, 'Date')) {
+//             child = new Date(parent.getTime());
+//         } else {
+//             proto = Object.getPrototypeOf(parent); // 获取原型链
+//             child = Object.create(proto);
+//         }
 
-        const index = parents.indexOf(parent);
-        if (index != -1) {
-            // 说明已经存在了，直接返回就行了
-            return parents[index];
-        }
-        parents.push(parent);
-        children.push(child);
+//         const index = parents.indexOf(parent);
+//         if (index != -1) {
+//             // 说明已经存在了，直接返回就行了
+//             return parents[index];
+//         }
+//         parents.push(parent);
+//         children.push(child);
 
-        for (const i in parent) {
-            child[i] = _clone(parent[i]);
-        }
-        return child;
-    }
-    return _clone(parent);
+//         for (const i in parent) {
+//             child[i] = _clone(parent[i]);
+//         }
+//         return child;
+//     }
+//     return _clone(parent);
+// }
+
+/**
+ * new的实现
+ */
+//  * New的实现原理 *
+//      1. 创建一个空对象， 构造函数中的this指向这个空对象 *
+//      2. 这个新对象被执行[[原型]] 连接 *
+//      3. 执行构造函数方法， 属性和方法被添加到this引用的对象中 *
+//      4. 如果构造函数中么有返回其他对象， 那么返回this， 即创建的这个新对象， 否则， 返回构造函数中返回的对象 *
+//      /
+// function _new() {
+//     const obj = new Object();
+//     const constru = Array.prototype.shift.call(arguments); // 取出构造函数
+//     obj.__proto__ = constru.prototype;
+//     const res = constru.apply(obj, arguments);
+//     if (typeof res !== 'object') {
+//         return obj;
+//     } else {
+//         return res;
+//     }
+// }
+
+/**
+ * call的实现
+ */
+// 将函数设为对象的属性
+// 执行 & 删除这个函数
+// 指定this到函数并传入给定参数执行函数
+// 如果不传入参数， 默认指向为 window
+// Function.prototype._call = function(context) {
+//     context = context || window; // 存在则使用上下文对象，否则指向全局
+//     context.fn = this; // this其实就是调用这个函数的对象
+//     const res = context.fn(arguments.silce(1)); // 取出除了第一个上下文对象外的其他参数，并在context中进行调用，this此时指向了context
+//     delete context.fn; // 用完就删
+//     return res;
+// }
+
+/**
+ * apply的实现(区别就在参数上)
+ */
+// Function.prototype._apply =  function(context) {
+//     context = context || window; // 存在则使用上下文对象，否则指向全局
+//     context.fn = this; // this其实就是调用这个函数的对象
+//     const args = arguments.silce(1);
+//     const res = context.fn(...arguments.silce(1)); // 取出除了第一个上下文对象外的其他参数,apply传入的是个数组
+//     delete context.fn; // 用完就删
+//     return res;
+// }
+
+/**
+ * bind的实现
+ */
+Function.prototype._bind = function(context) {
+    const self = this;
+    const args = Array.prototype.slice.call(arguments, 1);
+    const fBound
 }
