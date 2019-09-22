@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { EnhanceDemo1, EnhanceDemo2, EnhanceDemo3 } from './HOC/hoc';
+import { EnhanceDemo1, EnhanceDemo2 } from './HOC/hoc2';
 import * as serviceWorker from './serviceWorker';
 
 class App extends React.Component {
@@ -9,8 +9,7 @@ class App extends React.Component {
         return(
             <Fragment>
                 <EnhanceDemo1 color='blue' />
-                <EnhanceDemo2 />
-                <EnhanceDemo3 />
+                <EnhanceDemo2 color='blue' />
             </Fragment>
         )
     }
