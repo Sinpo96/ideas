@@ -1,0 +1,56 @@
+.container {
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+}
+
+.center {
+    border: 1px solid red;
+    width: 200px;
+    height: 200px;
+}
+
+
+/* 1.margin：0 auto */
+
+
+/* .center {
+    margin: 0 auto;
+    border: 1px solid red
+} */
+
+
+/* 2.绝对定位+margin(这种情况必须限制父级为relative且自身宽高已知) */
+
+
+/* .center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -100px;
+} */
+
+
+/* 3. 绝对定位+transform（父级为relative，无需知道自身宽高） */
+
+
+/* .center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+
+/* 4. table布局 */
+
+
+/*.center {
+    二选一
+    display: inline-block;
+    margin: 0 auto;
+} */
+
+
+/* 5. flex... */
