@@ -2,8 +2,8 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-06 08:56:26
- * @LastEditTime: 2019-09-04 00:45:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-10-04 15:06:19
+ * @LastEditors: Sinpo
  */
 /*
  * 一.New的实现原理 
@@ -424,20 +424,36 @@
 /**
  * 十二：JSONP
  */
-function JSONP({ url, params, callback }) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        window[callback] = function(data) {
-                resolve(data);
-                document.body.removeChild(script);
-            }
-            // 回到偶函数加在请求地址上
-        params = {...params, callback };
-        const arrs = [];
-        for (const key in params) {
-            arrs.push(`${key}=${params[key]}`);
-        }
-        script.src = `${url}?${arrs.join('&')}`;
-        document.body.appendChild(script);
+function JSONP({ url, params = {}, callback, callbackKey }) {
+    // 取一下id，没有就初始化
+    JSONP.callbackId = JSONP.callbackId || 1;
+    // 回调集合初始化
+    JSONP.callbackArr = JSONP.callbackArr || {};
+    JSONP.callbackArr[JSONP.callbackId] = callback;
+    // 将回调名加入params
+    params[callbackKey] = `JSONP.callbackArr[${JSONP.callbackId}]`;
+    // 拼参数
+    let paramString = Object.keys(params).map(val => {
+        return `${val}=${params[val]}`;
     });
+    paramString = paramString.join('&');
+    // 创建script
+    let script = document.createElement('script');
+    script.setAttribute('src', `${url}?${paramString}`);
+    document.body.appendChild(script);
+    // 自增id
+    JSONP.callbackId ++ ;
 }
+
+// 使用
+
+JSONP({
+    url: 'http://s.weibo.com/ajax/jsonp/suggestion',
+    params: {
+        // key: 'test',
+    },
+    callbackKey: '_cb',
+    callback(result) {
+        console.log(result.data)
+    }
+})
