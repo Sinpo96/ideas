@@ -8,9 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "JavaScript笔试题",
-            "program": "${workspaceFolder}/面试题/setTimeout、setInterval互相实现.js"
+            "program": "${workspaceFolder}/排序算法/冒泡排序.js"
         },
-        
         {
             "type": "node",
             "request": "launch",
