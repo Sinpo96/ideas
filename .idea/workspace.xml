@@ -2,27 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="baf4a65f-2b10-400b-afea-bb4b09d1493e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/public/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/public/robots.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/App.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/src/App.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/src/serviceWorker.js" beforeDir="false" afterPath="$PROJECT_DIR$/React16.x/src/serviceWorker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react16.x/yarn.lock" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573357893972</updated>
       <workItem from="1573357895083" duration="160000" />
-      <workItem from="1573358057276" duration="3879000" />
+      <workItem from="1573358057276" duration="4418000" />
     </task>
     <servers />
   </component>
