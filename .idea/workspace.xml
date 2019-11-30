@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="baf4a65f-2b10-400b-afea-bb4b09d1493e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Node/Module/a.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Node/Module/b.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ideas.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ideas.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Node/Events/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -127,6 +122,12 @@
       <workItem from="1573919465786" duration="1637000" />
       <workItem from="1573979473932" duration="1857000" />
       <workItem from="1573990163972" duration="5943000" />
+      <workItem from="1574093025076" duration="2329000" />
+      <workItem from="1574125581234" duration="1221000" />
+      <workItem from="1574500297830" duration="92000" />
+      <workItem from="1574500405563" duration="1198000" />
+      <workItem from="1574595267860" duration="899000" />
+      <workItem from="1575091857957" duration="621000" />
     </task>
     <servers />
   </component>
