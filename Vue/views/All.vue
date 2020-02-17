@@ -1,10 +1,3 @@
-<!--
- * @Description: 
- * @Autor: Sinpo
- * @Date: 2020-02-16 18:33:46
- * @LastEditors: Sinpo
- * @LastEditTime: 2020-02-16 19:35:27
- -->
 <template>
   <ul class="list">
     <li class="item" v-for="(todo,index) in todos" :key="index">
@@ -21,19 +14,12 @@
 export default {
   computed: {
     todos() {
-      return JSON.parse(window.localStorage.getItem("todos"));
+      return this.$store.state.todos.filter(x => x.status);
     }
   },
   methods: {
     changeStatus(name) {
-      const todos = JSON.parse(window.localStorage.getItem("todos"));
-      todos.forEach(todo => {
-        if(todo.name === name){
-          todo.status = !todo.status;
-        }
-      });
-       window.localStorage.setItem("todos", JSON.stringify(todos));
-       this.$router.go(0);
+      this.$store.commit('changeTodoState',name);
     }
   }
 };

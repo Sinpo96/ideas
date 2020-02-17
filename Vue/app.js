@@ -3,7 +3,7 @@
  * @Autor: Sinpo
  * @Date: 2020-02-16 17:43:25
  * @LastEditors  : Sinpo
- * @LastEditTime : 2020-02-16 19:34:36
+ * @LastEditTime : 2020-02-17 14:39:23
  */
 import Vue from 'vue';
 import App from './app/App.vue';
@@ -12,6 +12,8 @@ import VueRouter from 'vue-router';
 import Index from './views/All.vue';
 import Completed from './views/Completed.vue';
 import Uncompleted from './views/UnCompleted.vue';
+
+import store from './store.js';
 
 Vue.use(VueRouter);
 
@@ -46,5 +48,6 @@ const router = new VueRouter({
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(App),
 });

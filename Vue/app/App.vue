@@ -6,7 +6,7 @@
       <button @click="add" class="add_button">添加</button>
       <p
         class="content-div"
-      >当前共有{{todoList.length}}个代办事项,已完成{{completed}}个,剩余{{todoList.length-completed}}个。</p>
+      >当前共有{{this.$store.todoList.length}}个代办事项,已完成{{completed}}个,剩余{{todoList.length-completed}}个。</p>
       <p class="content-div">
         
         <router-link to="/index">全部</router-link>
@@ -30,14 +30,13 @@ export default {
   },
   computed: {
     completed() {
-      this.todoList = JSON.parse(window.localStorage.getItem("todos"));
-      return this.todoList.filter(x => x.status).length;
+        return this.$store.state.todos.filter(x => x.status).length;
     }
   },
   methods: {
     add() {
       this.picked = 0;
-      this.todoList.push({ name: this.todo, status: false });
+      this.$store.commit("addTodo", { name: this.todo, status: false });
       window.localStorage.setItem("todos", JSON.stringify(this.todoList));
       this.$router.go(0);
     }
