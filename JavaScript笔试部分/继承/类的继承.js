@@ -1,6 +1,6 @@
 // 父类
 function SuperClass () {
-    this.test = ['test'];
+    this.test = [ 'test' ];
     this.superClass = true;
 }
 
