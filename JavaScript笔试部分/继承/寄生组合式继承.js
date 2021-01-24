@@ -4,6 +4,7 @@ function inheritObject (o) {
     }
 
     F.prototype = o;
+    // 如果这边不用new，在实例的instanceof判断中就会出问题，显示Super和Sub都是instanceof的构造函数，但其实只有Sub才是构造函数，Super只是父类
     return new F();
 }
 
