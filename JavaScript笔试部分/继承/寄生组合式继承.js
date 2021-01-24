@@ -5,6 +5,7 @@ function inheritObject (o) {
 
     F.prototype = o;
     // 如果这边不用new，在实例的instanceof判断中就会出问题，显示Super和Sub都是instanceof的构造函数，但其实只有Sub才是构造函数，Super只是父类
+    // 关于这边为什么要用new，可以参见: http://louiszhai.github.io/2015/12/15/prototypeChain/#proto-%E5%B1%9E%E6%80%A7%E6%98%AF%E6%8C%87%E5%AE%9A%E5%8E%9F%E5%9E%8B%E7%9A%84%E5%85%B3%E9%94%AE
     return new F();
 }
 
