@@ -6,10 +6,12 @@ const isObject = obj => !!(obj && typeof obj === 'object');
 const isFunction = obj => typeof obj === 'function';
 /**
  *  thenable 对象 -> {
- *       then: function (resolve, reject) {
+ *       then: (resolve, reject) => {
  *           xxx
  *       }
  *  }
+ *  本质上，new Promise(fn) 中的 fn 和 then 的入参 function 是同一类，都是  (resolve, reject) => {xxx}
+ *  只不过 fn 写的是预定义好的 resolve 和 reject，而 then 的第一个入参是自定义的 resolve
  */
 const isThenaable = obj => (isObject(obj) || isFunction(obj)) && isFunction(obj.then);
 const isPromise = promise => promise instanceof PromiseA;

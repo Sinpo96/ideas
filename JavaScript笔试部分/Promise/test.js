@@ -1,7 +1,7 @@
 const PromiseA = require('./PromiseA+');
 
 new PromiseA((resolve, reject) => {
-    reject(1);
+    resolve(1);
 }).then(val => {
     console.log(`---resolve1 ${ val }`);
 }, val => {
