@@ -12,7 +12,7 @@ const isFunction = obj => typeof obj === 'function';
  *  }
  */
 const isThenaable = obj => (isObject(obj) || isFunction(obj)) && isFunction(obj.then);
-const isPromise = promise => promise instanceof Promise;
+const isPromise = promise => promise instanceof PromiseA;
 
 /**
  * @desc 状态迁移
@@ -44,7 +44,7 @@ const handleCallback = (callback, state, result) => {
         } else if (state === REJECTED) {
             // 这里为什么要用 resolve 处理 onRejected 的结果？？？
             // 因为在 onRejected 里面，处理后的数据如果不 throw ，是不会走 catch 的
-            // then 中的 onRejected 只是代表处理 reject 的数据，还是需要将返回值传给下一个 then 的（如果被 catch 捕获需要 throw 或者 return Promise.reject(xxx)）
+            // then 中的 onRejected 只是代表处理 reject 的数据，还是需要将返回值传给下一个 then 的（如果被 catch 捕获需要 throw 或者 return PromiseA.reject(xxx)）
             isFunction(onRejected) ? resolve(onRejected(result)) : rejected(result);
         }
     } catch (e) {
@@ -73,7 +73,7 @@ const resolvePromise = (promise, result, resolve, reject) => {
         try {
             const then = result.then;
             if (isFunction(then)) {
-                return new Promise(then.bind(result)).then(resolve, reject);
+                return new PromiseA(then.bind(result)).then(resolve, reject);
             }
         } catch (e) {
             return reject(e);
@@ -83,8 +83,8 @@ const resolvePromise = (promise, result, resolve, reject) => {
     resolve(result);
 }
 
-// Promise 的构造函数
-function Promise (f) {
+// PromiseA 的构造函数
+function PromiseA (f) {
     this.state = PENDING;
     this.result = null;
     // 回调函数集合
@@ -113,9 +113,9 @@ function Promise (f) {
     }
 }
 
-// then 方法必须返回 Promise 对象
-Promise.prototype.then = function (onFulfilled, onRejected) {
-    return new Promise((resolve, rejected) => {
+// then 方法必须返回 PromiseA 对象
+PromiseA.prototype.then = function (onFulfilled, onRejected) {
+    return new PromiseA((resolve, rejected) => {
         const callback = { onFulfilled, onRejected, resolve, rejected };
 
         if (this.state === PENDING) {
@@ -129,4 +129,4 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
     });
 }
 
-module.exports = Promise;
+module.exports = PromiseA;
