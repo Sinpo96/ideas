@@ -44,7 +44,6 @@ const handleCallback = (callback, state, result) => {
         } else if (state === REJECTED) {
             // 这里为什么要用 resolve 处理 onRejected 的结果？？？
             // 因为当 then 中的 onRejected 处理完之后，传给下一个 then 时就不再是 reject 而是 resolve 状态了
-            // 每经过一次 then / catch 都会修改构造函数 Promise 的变量（state、result）从而传递给下一个 then / catch
             // 如果这边的 then 中不传递 reject 处理方法，那么直接传递给下一层处理
             isFunction(onRejected) ? resolve(onRejected(result)) : rejected(result);
         }
