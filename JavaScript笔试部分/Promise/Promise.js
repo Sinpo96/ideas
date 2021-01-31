@@ -31,11 +31,16 @@ const isFunction = arg => typeof arg === 'function';
  */
 const handleCallback = (state, result, callback) => {
     const { onFulfilled, onRejected, resolve, reject } = callback;
-    if (state === FULFILLED) {
-        isFunction(onFulfilled) ? resolve(onFulfilled(result)) : resolve(result);
-    } else if (state === REJECTED) {
-        // 如果 onReject 是 function，那么执行完的值 resolve 掉，如果不是，那么还得传递给下一个 then 进行处理
-        isFunction(onRejected) ? resolve(onRejected(result)) : reject(result);
+    try {
+        if (state === FULFILLED) {
+            isFunction(onFulfilled) ? resolve(onFulfilled(result)) : resolve(result);
+        } else if (state === REJECTED) {
+            // 如果 onReject 是 function，那么执行完的值 resolve 掉，如果不是，那么还得传递给下一个 then 进行处理
+            isFunction(onRejected) ? resolve(onRejected(result)) : reject(result);
+        }
+    } catch (e) {
+        // 执行then传递的函数时，如果有报错，直接抛出给下一个 then / catch
+        reject(e);
     }
 }
 
@@ -77,7 +82,11 @@ function PromiseSrc (fn) {
         handlePromiseCallbacks(this);
     };
 
-    fn(resolve, reject);
+    try {
+        fn(resolve, reject);
+    } catch (e) {
+        reject(e);
+    }
 }
 
 /**
