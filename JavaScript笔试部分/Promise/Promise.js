@@ -25,13 +25,15 @@ const FULFILLED = 'fulfilled';
 const REJECTED = 'rejected';
 
 const isFunction = arg => typeof arg === 'function';
+const isPromise = arg => arg instanceof Promise;
+const isThenAble = arg => isFunction(arg) && arg.then;
 
 /**
  * @desc 状态便签方法
  */
 const transaction = (promise, state, result) => {
     promise.result = result;
-    promise.state = FULFILLED;
+    promise.state = state;
     setTimeout(() => {
         handlePromiseCallbacks(promise.callbacks, state, result);
     }, 0);
@@ -63,6 +65,34 @@ const handlePromiseCallbacks = (callbacks, state, result) => {
 };
 
 /**
+ * @desc PromiseA+ 规范对于输入值的处理
+ */
+const resolvePromise = (promise, result, resolve, reject) => {
+    // x 与 promise 相等：如果 promise 和 x 指向同一对象，以 TypeError 为据因拒绝执行 promise
+    if (promise === result) {
+        return reject(new TypeError('Can not fulfill promise with itself'));
+    }
+    // x 为 Promise
+    if (isPromise(result)) {
+        return result.then(resolve, reject);
+    }
+    // x 为 thenable对象
+    if (isThenAble(result)) {
+        try {
+            // 把 x.then 赋值给 then
+            const then = result.then();
+            // 如果 then 是函数，将 x 作为函数的作用域 this 调用之
+            return new PromiseSrc(then.bind(result)).then(resolve, reject);
+        } catch (e) {
+            // 如果取 x.then 的值时抛出错误 e ，则以 e 为据因拒绝 promise
+            return reject(e);
+        }
+    }
+
+    resolve(result);
+}
+
+/**
  * @desc promise的实现源码
  * @constructor
  */
@@ -75,12 +105,17 @@ function PromiseSrc (fn) {
     const onFulfilled = value => transaction(this, FULFILLED, value);
     const onRejected = reason => transaction(this, REJECTED, reason);
 
+    // 如果 resolvePromise 和 rejectPromise 均被调用，或者被同一参数调用了多次，则优先采用首次调用并忽略剩下的调用
+    let ignore = false;
     /**
      * @desc resolve, value 指任何 JavaScript 的合法值（包括 undefined , thenable 和 promise）；
      * @param value
      */
     const resolve = (value) => {
-        onFulfilled(value);
+        if (ignore) return;
+        ignore = true;
+        // PromiseA+ 规范对于输入值的处理
+        resolvePromise(this, value, onFulfilled, onRejected);
     };
 
     /**
@@ -88,6 +123,8 @@ function PromiseSrc (fn) {
      * @param reason
      */
     const reject = (reason) => {
+        if (ignore) return;
+        ignore = true;
         onRejected(reason);
     };
 
