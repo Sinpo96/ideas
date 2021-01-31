@@ -29,7 +29,7 @@ const isPromise = arg => arg instanceof PromiseSrc;
 const isThenAble = arg => isFunction(arg) && arg.then;
 
 /**
- * @desc 状态便签方法
+ * @desc 状态变迁方法
  */
 const transaction = (promise, state, result) => {
     promise.result = result;
