@@ -27,6 +27,17 @@ const REJECTED = 'rejected';
 const isFunction = arg => typeof arg === 'function';
 
 /**
+ * @desc 状态便签方法
+ */
+const transaction = (promise, state, result) => {
+    promise.result = result;
+    promise.state = FULFILLED;
+    setTimeout(() => {
+        handlePromiseCallbacks(promise.callbacks, state, result);
+    }, 0);
+}
+
+/**
  * @desc Promise状态变更的回调处理函数
  */
 const handleCallback = (state, result, callback) => {
@@ -44,8 +55,7 @@ const handleCallback = (state, result, callback) => {
     }
 }
 
-const handlePromiseCallbacks = (promise) => {
-    const { state, result, callbacks } = promise;
+const handlePromiseCallbacks = (callbacks, state, result) => {
     while (callbacks.length) {
         const callback = callbacks.shift();
         handleCallback(state, result, callback);
@@ -62,14 +72,15 @@ function PromiseSrc (fn) {
     this.result = null;
     this.callbacks = [];
 
+    const onFulfilled = value => transaction(this, FULFILLED, value);
+    const onRejected = reason => transaction(this, REJECTED, reason);
+
     /**
      * @desc resolve, value 指任何 JavaScript 的合法值（包括 undefined , thenable 和 promise）；
      * @param value
      */
     const resolve = (value) => {
-        this.result = value;
-        this.state = FULFILLED;
-        handlePromiseCallbacks(this);
+        onFulfilled(value);
     };
 
     /**
@@ -77,9 +88,7 @@ function PromiseSrc (fn) {
      * @param reason
      */
     const reject = (reason) => {
-        this.result = reason;
-        this.state = REJECTED;
-        handlePromiseCallbacks(this);
+        onRejected(reason);
     };
 
     try {
