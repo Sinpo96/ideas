@@ -156,26 +156,18 @@ PromiseSrc.prototype.then = function (onFulfilled, onRejected) {
     });
 }
 
+/**
+ * @desc catch
+ */
 PromiseSrc.prototype.catch = function (onRejected) {
     return this.then(null, onRejected);
 }
 
-new PromiseSrc((resolve, reject) => {
-    reject('test');
-}).catch((reason) => {
-    console.log('catch');
-    console.log(reason);
-    return reason;
-}).then((val) => {
-    console.log('第一层的then');
-    console.log(val);
-    return val;
-}).then((val) => {
-    console.log('第二层的then');
-    console.log(val);
-}, (val) => {
-    console.log('reject');
-    console.log(val);
-});
+PromiseSrc.resolve = function (val) {
+    if (val instanceof PromiseSrc) return val;
+    return new PromiseSrc(resolve => resolve(val));
+}
 
+PromiseSrc.resolve(new PromiseSrc(resolve => resolve(1))).then(val => console.log(val));
+PromiseSrc.resolve(1).then(val => console.log(val));
 // module.exports = PromiseSrc;
