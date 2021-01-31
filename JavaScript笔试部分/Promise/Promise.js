@@ -25,7 +25,7 @@ const FULFILLED = 'fulfilled';
 const REJECTED = 'rejected';
 
 const isFunction = arg => typeof arg === 'function';
-const isPromise = arg => arg instanceof Promise;
+const isPromise = arg => arg instanceof PromiseSrc;
 const isThenAble = arg => isFunction(arg) && arg.then;
 
 /**
@@ -208,9 +208,14 @@ PromiseSrc.race = function (promiseList) {
     })
 }
 
-const promiseA = new PromiseSrc((resolve, reject) => resolve(1));
-const promiseB = new PromiseSrc((resolve, reject) => reject(2));
+PromiseSrc.prototype.finally = function (callback) {
+    // finally 后面还可以接 callback，所以还是返回 promise 对象
+    return this.then(
+        value => PromiseSrc.resolve(callback()).then(() => value),
+        reason => PromiseSrc.resolve(callback()).then(() => {
+            throw reason
+        }),
+    );
+}
 
-PromiseSrc.all([ promiseA, promiseB ]).then(val => console.log(val)).catch(reason => console.log(reason));
-PromiseSrc.race([ promiseA, promiseB ]).then(val => console.log(`race: ${ val }`)).catch(reason => console.log(`race: ${ reason }`));
 // module.exports = PromiseSrc;
