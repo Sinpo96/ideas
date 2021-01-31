@@ -168,6 +168,49 @@ PromiseSrc.resolve = function (val) {
     return new PromiseSrc(resolve => resolve(val));
 }
 
-PromiseSrc.resolve(new PromiseSrc(resolve => resolve(1))).then(val => console.log(val));
-PromiseSrc.resolve(1).then(val => console.log(val));
+PromiseSrc.reject = function (val) {
+    if (val instanceof PromiseSrc) return val;
+    return new PromiseSrc((resolve, reject) => reject(val));
+}
+
+PromiseSrc.all = function (promiseList) {
+    return new PromiseSrc((resolve, reject) => {
+        let result = [];
+        let count = 0;
+        // 遍历promise数组
+        for (let [ i, p ] of promiseList.entries()) {
+            this.resolve(p).then(val => {
+                result[i] = val;
+                count++;
+                if (count === promiseList.length) {
+                    // 说明已经全部结束了
+                    resolve(result);
+                }
+            }).catch(e => {
+                // 有一个被rejected时返回的MyPromise状态就变成rejected
+                reject(e);
+            });
+        }
+    });
+}
+
+PromiseSrc.race = function (promiseList) {
+    return new PromiseSrc((resolve, reject) => {
+        // 遍历promise数组
+        promiseList.map(promise => {
+            this.resolve(promise).then(val => {
+                resolve(val);
+            }).catch(e => {
+                // 有一个被rejected时返回的MyPromise状态就变成rejected
+                reject(e);
+            });
+        });
+    })
+}
+
+const promiseA = new PromiseSrc((resolve, reject) => resolve(1));
+const promiseB = new PromiseSrc((resolve, reject) => reject(2));
+
+PromiseSrc.all([ promiseA, promiseB ]).then(val => console.log(val)).catch(reason => console.log(reason));
+PromiseSrc.race([ promiseA, promiseB ]).then(val => console.log(`race: ${ val }`)).catch(reason => console.log(`race: ${ reason }`));
 // module.exports = PromiseSrc;
