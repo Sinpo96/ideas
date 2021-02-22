@@ -6,23 +6,19 @@
  * @LastEditors: Sinpo
  */
 const bubbleSort = (arr) => {
-    const len = arr.length;
-    for (let i = 0; i < len; i++) {
-        // 这里之所以是 -1-i
-        // 是因为总计需要遍历len次
-        // 但因为上次排完最后一个都是最大的
-        // 所以每下一次都会省去一个末尾的值
-        console.log(len - 1 - i);
-        for (let j = 0; j < len - 1 - i; j++) {
+    const length = arr.length;
+    // 至少比较两个
+    for (let i = 2; i < length; i++) {
+        // 每一次遍历 length - j 项
+        for (let j = 0; j < length - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                const temp = arr[j + 1];
-                arr[j + 1] = arr[j];
-                arr[j] = temp;
+                [ arr[j + 1], arr[j] ] = [ arr[j], arr[j + 1] ];
             }
-        }        
+        }
     }
     return arr;
 }
+// 算法时间复杂度为：(length - 2) * (length) = length^2 - 2length = O(n^2)
 
-const arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48];
+const arr = [ 3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48 ];
 console.log(bubbleSort(arr));
