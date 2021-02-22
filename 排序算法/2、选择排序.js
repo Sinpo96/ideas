@@ -7,8 +7,7 @@
  */
 const selectionSort = (arr) => {
     const len = arr.length;
-    let minIndex, temp;
-    console.time('选择排序耗时');
+    let minIndex;
     for (let i = 0; i < len; i++) {
         minIndex = i;
         for (let j = i + 1; j < len; j++) {
@@ -16,14 +15,10 @@ const selectionSort = (arr) => {
                 minIndex = j;
             }
         }
-        // 交换内容
-        temp = arr[i];
-        arr[i] = arr[minIndex];
-        arr[minIndex] = temp;
+        [ arr[i], arr[minIndex] ] = [ arr[minIndex], arr[i] ];
     }
-    console.timeEnd('选择排序耗时');
     return arr;
 }
 
-const arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48];
+const arr = [ 3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48 ];
 console.log(selectionSort(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
