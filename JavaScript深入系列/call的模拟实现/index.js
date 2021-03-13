@@ -1,4 +1,5 @@
 Function.prototype.call2 = function(context) {
+    // call的第一个参数可以为null，为null的时候指向window对象
     context = context || window;
     // this即为调用该call的函数
     context.fn = this;
