@@ -7,17 +7,15 @@
  */
 /** 注意，这里定义时不能使用箭头函数，如果使用，那么取不到调用这个bind2的方法 */
 Function.prototype.bind2 = function(context) {
-    /* context 此时是foo */
-    const self = this;
-    const args = Array.prototype.slice.call(arguments, 1);
-    const middle = function() {};
-    const fBound = function() {
-        /** 判断一下 */
-        return self.call(this instanceof self ? this : context, ...args, ...arguments);
-    };
-    middle.prototype = this.prototype; // 为了不影响原来的原型，做个中转
-    fBound.prototype = new middle();
-    return fBound;
+    const fn = this;
+    // 取出参数
+    const args = Array.from(arguments).slice(1);
+    const bound = function () {
+        // 如果是实例，那么就是new出来的，此时原本的bind的对象失效
+        return fn.call(this instanceof bound ? this : context, ...args, ...arguments);
+    }
+    bound.prototype = Object.create(fn.prototype);
+    return bound;
 }
 
 var value = 2;
