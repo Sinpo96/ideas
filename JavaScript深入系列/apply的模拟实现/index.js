@@ -1,34 +1,21 @@
-Function.prototype.apply2 = function(context) {
-    var context = context || window; // 当传参是null时，指向全局
-    context.fn = this; // 先取出方法，接下来取参数
-    var args = Array.prototype.slice.call(arguments, 1);
-    let res = undefined;
-    if (args.length == 0) {
-        // 这是没有传参的情况
-        res = context.fn();
-    } else {
-        res = context.fn(...args[0]);
-    }
+Function.prototype._apply = function (context) {
+    context = context || window;
+    context.fn = this;
+    // 因为apply的入参是一个数组，所以需要进行数组的解构
+    const [args] = Array.from(arguments).slice(1);
+    const res = context.fn(...args);
     delete context.fn;
     return res;
 }
 
-// 测试一下
-var value = 2;
-
-var obj = {
-    value: 1
+const obj = {
+    a: 'test'
 }
 
-function bar(name, age) {
-    console.log(this.value);
-    return {
-        value: this.value,
-        name: name,
-        age: age
-    }
+// 这里不能使用箭头函数，不然this直接绑定到了全局上
+function a(arr) {
+    console.log(this.a);
+    console.log(arr);
 }
 
-bar.apply2(null);
-
-console.log(bar.apply2(obj, ['kevin', 18]));
+a._apply(obj, ['sinpo']);
