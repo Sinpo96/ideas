@@ -1,30 +1,16 @@
-/* 第一版 */
-// Function.prototype.call2 = function(context) {
-//     context.fn = this;
-//     context.fn();
-//     delete context.fn;
-// }
-
-// const foo = {
-//     value: 1
-// }
-
-// function bar() {
-//     console.log(this.value);
-// }
-
-// bar.call2(foo);
-
-/* 第二版 */
 Function.prototype.call2 = function(context) {
     context = context || window;
+    // this即为调用该call的函数
     context.fn = this;
-    const arg = []; // 接受参数
-    for (let i = 1; i < arguments.length; i++) {
-        arg.push(arguments[i]);
+    const args = [];
+    for (let i = 0; i < arguments.length; i ++) {
+        if (i > 0) {
+            args.push(arguments[i]);
+        }
     }
-    context.fn(...arg);
+    const res = context.fn(...args);
     delete context.fn;
+    return res;
 }
 
 const foo = {
