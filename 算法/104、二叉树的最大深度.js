@@ -18,7 +18,7 @@ var maxDepth = function (root) {
 		const left = maxDepth(root.left);
 		// 递归获取右边子节点的最大深度
 		const right = maxDepth(root.right);
-		// 取两边的最大深度，并加上第一层的深度 1
+		// 取两边的最大深度（每经过一层就 +1 ，这个 1 指的就是本层）
 		return Math.max(left, right) + 1;
 	}
 };
