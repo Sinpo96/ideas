@@ -44,33 +44,39 @@ const getEmpty = (val) => {
  * @param obj
  */
 const deepCloneBFS = (obj) => {
-	// 使用map保存引用破解递归爆栈
+	// 使用map破解递归爆栈
 	const map = new Map();
+	// 队列保存待遍历的数据
+	let queue = [];
+	// 返回值的类型根据obj的类型来定
 	let res = getEmpty(obj);
-	let stack = [];
-	if (res !== obj) {
-		stack.push([obj, res]);
+	// 如果相等，说明是同一个数据，不用遍历（例如传入1，getEmpty返回的也是1，这就不需要遍历了）
+	if (res !== queue) {
+		queue.push([obj, res]);
 		map.set(obj, res);
 	}
-	while (stack.length) {
-		const [node, tar] = stack.shift();
-		for (let i in node) {
-			if (!Object.prototype.hasOwnProperty.call(node, i)) {
+	while (queue.length) {
+		// 取出第一个节点
+		const [node, target] = queue.shift();
+		for (let key in node) {
+			if (!Object.prototype.hasOwnProperty.call(node, key)) {
 				continue;
 			}
-			if (map.get(node[i])) {
-				tar[i] = map.get(node[i]);
+			if (map.get(node[key])) {
+				// 存在说明是循环引用了，直接返回对象就行了
+				target[key] = map.get(node[key]);
 				continue;
 			}
-			tar[i] = getEmpty(node[i]);
-			// 如果是引用类型就继续
-			if (isObject(node[i]) || isArray(node[i])) {
-				// 是对象继续遍历，不是就放入最终的对象中
-				stack.push([node[i], tar[i]]);
-				map.set(node[i], tar[i]);
+			// 初始化target[key]
+			target[key] = getEmpty(node[key]);
+			// 引用类型
+			if (isObject(node[key]) || isArray(node[key])) {
+				queue.push([node[key], target[key]]);
+				map.set(node[key], target[key]);
 				continue;
 			}
-			tar[i] = node[i];
+			// 走到这里的都是基础类型了，不会有引用，直接赋值
+			target[key] = node[key];
 		}
 	}
 	return res;
