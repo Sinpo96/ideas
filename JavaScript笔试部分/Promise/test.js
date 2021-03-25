@@ -1,4 +1,4 @@
-const PromiseA = require('./PromiseA+');
+const PromiseA = require('./Promise');
 
 new PromiseA((resolve, reject) => {
     resolve(1);

@@ -218,4 +218,4 @@ PromiseSrc.prototype.finally = function (callback) {
     );
 }
 
-// module.exports = PromiseSrc;
+module.exports = PromiseSrc;
