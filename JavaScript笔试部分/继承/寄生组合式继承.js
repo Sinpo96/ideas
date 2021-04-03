@@ -14,7 +14,7 @@ function inheritPrototype (Sub, Super) {
     const SuperPrototype = Super.prototype;
     // 此时，原型式继承的入参是父类的原型，而不是一个普通对象
     const p = inheritObject(SuperPrototype);
-    // 修正 p 的构造函数的指向
+    // 修正 p 的构造函数的指向，此时 p.constructor 指向了 SuperClass
     p.constructor = Sub;
     Sub.prototype = p;
 }
