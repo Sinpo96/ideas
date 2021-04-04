@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "promises-aplus-tests JavaScript笔试部分/Promise/Promise.js"
   },
   "repository": {
     "type": "git",
