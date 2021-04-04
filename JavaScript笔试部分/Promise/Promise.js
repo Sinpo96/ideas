@@ -42,22 +42,26 @@ const handleCallback = (callback, state, result) => {
 // 处理下 result 的可能情况
 const resolvePromise = (promise, result, resolve, reject) => {
     if (promise === result) {
+        // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
         return reject(new TypeError('can not resolve itself'));
     }
     if (isPromise(result)) {
+        // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
         return result.then(resolve, reject);
     }
     if (isThenable(result)) {
         try {
             const then = result.then;
             if (isFunction(then)) {
+                // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
                 return new PromiseSrc(then.bind(result)).then(resolve, reject);
             }
         } catch (e) {
+            // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
             return reject(e);
         }
     }
-
+    // 这里无需 return，return 也没啥用
     resolve(result);
 }
 
