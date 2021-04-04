@@ -103,6 +103,12 @@ PromiseSrc.prototype.then = function (onFulfilled, onRejected) {
     });
 }
 
+// catch 中 return 的值还是会被下一个 then 的 resolve 给捕捉到
+PromiseSrc.prototype.catch = function (onRejected) {
+    return this.then(null, onRejected);
+}
+
+// ----------------------------------------------------------------------------------------------------------
 // 实现一个promise的延迟对象 deferred
 PromiseSrc.deferred = function() {
     let dfd = {}
