@@ -3,7 +3,7 @@ const FULFILLED = 'fulfilled';
 const REJECTED = 'rejected';
 
 const isFunction = obj => Object.prototype.toString.call(obj) === '[object Function]';
-const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
+const isObject = obj => !!(obj && Object.prototype.toString.call(obj) === '[object Object]');
 const isPromise = obj => obj instanceof PromiseSrc;
 const isThenable = obj => (isFunction(obj) || isObject(obj)) && 'then' in obj;
 
@@ -42,22 +42,22 @@ const handleCallback = (callback, state, result) => {
 // 处理下 result 的可能情况
 const resolvePromise = (promise, result, resolve, reject) => {
     if (promise === result) {
-        // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
+        // 这里之所以要return，是因为还没有真正的进入resolve，如果不return，那么then就接收不到数据
         return reject(new TypeError('can not resolve itself'));
     }
     if (isPromise(result)) {
-        // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
+        // 这里之所以要return，是因为还没有真正的进入resolve，如果不return，那么then就接收不到数据
         return result.then(resolve, reject);
     }
     if (isThenable(result)) {
         try {
             const then = result.then;
             if (isFunction(then)) {
-                // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
+                // 这里之所以要return，是因为还没有真正的进入resolve，如果不return，那么then就接收不到数据
                 return new PromiseSrc(then.bind(result)).then(resolve, reject);
             }
         } catch (e) {
-            // 如果不是 同步resolve 或者 被reject 了，那么得用 return 才能继续往下链式调用
+            // 这里之所以要return，是因为还没有真正的进入resolve，如果不return，那么then就接收不到数据
             return reject(e);
         }
     }
@@ -114,7 +114,7 @@ PromiseSrc.prototype.catch = function (onRejected) {
 
 // ----------------------------------------------------------------------------------------------------------
 // 实现一个promise的延迟对象 deferred
-PromiseSrc.deferred = function() {
+PromiseSrc.deferred = function () {
     let dfd = {}
     dfd.promise = new PromiseSrc((resolve, reject) => {
         dfd.resolve = resolve
