@@ -112,6 +112,17 @@ PromiseSrc.prototype.catch = function (onRejected) {
     return this.then(null, onRejected);
 }
 
+// Promise的返回值也是一个Promise对象
+PromiseSrc.resolve = function (val) {
+    if (isPromise(val)) return val;
+    return new PromiseSrc(resolve => resolve(val));
+}
+
+PromiseSrc.reject = function (reason) {
+    if (isPromise(reason)) return reason;
+    return new PromiseSrc((resolve, reject) => reject(reason));
+}
+
 // ----------------------------------------------------------------------------------------------------------
 // 实现一个promise的延迟对象 deferred
 PromiseSrc.deferred = function () {
