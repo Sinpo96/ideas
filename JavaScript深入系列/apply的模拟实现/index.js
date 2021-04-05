@@ -1,7 +1,8 @@
-Function.prototype._apply = function (context) {
-    context = context || window;
+Function.prototype._apply = function () {
+    // arguments[0] 是它的上下文
+    const context = arguments[0];
     context.fn = this;
-    // 因为apply的入参是一个数组，所以需要进行数组的解构
+    // 收集参数
     const [args] = Array.from(arguments).slice(1);
     const res = context.fn(...args);
     delete context.fn;

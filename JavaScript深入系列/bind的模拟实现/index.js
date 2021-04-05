@@ -10,6 +10,7 @@ Function.prototype.bind2 = function(context) {
     const fn = this;
     // 取出参数
     const args = Array.from(arguments).slice(1);
+    // 之所以叫 bound 是因为原生的 bind 返回的函数名就是 'bound '(bound 加一个空格)
     const bound = function () {
         // 如果是实例，那么就是new出来的，此时原本的bind的对象失效
         return fn.call(this instanceof bound ? this : context, ...args, ...arguments);

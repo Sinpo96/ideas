@@ -1,11 +1,12 @@
-Function.prototype.call2 = function(context) {
-    // call的第一个参数可以为null，为null的时候指向window对象
+Function.prototype._call = function (context) {
+    // context 是调用 _call 方法的上下文
     context = context || window;
-    // this即为调用该call的函数
+    // this 就是调用 _call 的函数
     context.fn = this;
+    // 获取参数
     const args = [];
-    for (let i = 0; i < arguments.length; i ++) {
-        if (i > 0) {
+    for (let i = 0; i < arguments.length; i++) {
+        if (i >= 1) {
             args.push(arguments[i]);
         }
     }
@@ -18,10 +19,10 @@ const foo = {
     value: 1
 }
 
-function bar(name, age) {
+function bar (name, age) {
     console.log(name);
     console.log(age);
     console.log(this.value);
 }
 
-bar.call2(foo, 'Sinpo', 23);
+bar._call(foo, 'Sinpo', 23);
