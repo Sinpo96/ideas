@@ -1,9 +1,19 @@
-function moniNew() {
-    const obj = new Object();
-    const Constructor = Array.prototype.shift.apply(arguments); // 先取出构造函数，剩下的arguments其实就是入参了
-    obj.__proto__ = Constructor.prototype;
-    const ret = Constructor.apply(obj, arguments);
-    return ret === 'object' ? ret : obj;
+function _new() {
+    // 第一步，声明一个空对象
+    const target = {};
+    // 第二步，取出构造函数
+    const args = Array.from(arguments);
+    const Constructor = args.shift();
+    // 第三步，执行原型的链接
+    target.__proto__ = Constructor.prototype;
+    // 第四步，执行构造函数
+    const res = Constructor.apply(target, args);
+    // 如果返回值是 object 或者 function，那么返回 res
+    if (res && (typeof res === 'object' || typeof res === 'function')) {
+        return res;
+    }
+    // 否则返回第一步声明的空对象
+    return target;
 }
 
 function Otaku(name, age) {
@@ -19,7 +29,7 @@ Otaku.prototype.sayYourName = function() {
     console.log('I am ' + this.name);
 }
 
-var person = moniNew(Otaku, 'Kevin', '18')
+var person = _new(Otaku, 'Kevin', '18')
 
 console.log(person.name) // Kevin
 console.log(person.habit) // Games
