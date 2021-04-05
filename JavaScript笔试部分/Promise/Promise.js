@@ -156,6 +156,15 @@ PromiseSrc.prototype.race = function (promiseList) {
     });
 }
 
+// finally后面还可以接callback，所以返回的还是个Promise对象
+PromiseSrc.prototype.finally = function (callback) {
+    return this.then((value) => {
+        return PromiseSrc.resolve(callback()).then(() => value);
+    }, (reason) => {
+        return PromiseSrc.resolve(callback()).then(null, () => reason);
+    })
+}
+
 // ----------------------------------------------------------------------------------------------------------
 // 实现一个promise的延迟对象 deferred
 PromiseSrc.deferred = function () {
