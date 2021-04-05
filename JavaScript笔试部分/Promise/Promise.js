@@ -123,6 +123,39 @@ PromiseSrc.reject = function (reason) {
     return new PromiseSrc((resolve, reject) => reject(reason));
 }
 
+PromiseSrc.prototype.all = function (promiseList) {
+    return new PromiseSrc((resolve, reject) => {
+        let result = [];
+        let count = 0;
+        for (const [i, p] of promiseList.entries()) {
+            this.resolve(p).then((val) => {
+                count++;
+                result[i] = val;
+                if (count === promiseList.length) {
+                    // 说明已经全部结束了
+                    resolve(result);
+                }
+            }).catch(e => {
+                // 有一个被rejected时返回的MyPromise状态就变成rejected
+                reject(e)
+            });
+        }
+    });
+}
+
+PromiseSrc.prototype.race = function (promiseList) {
+    return new PromiseSrc((resolve, reject) => {
+        promiseList.map(promise => {
+            this.resolve(promise).then(val => {
+                resolve(val);
+            }).catch(e => {
+                // 有一个被rejected时返回的MyPromise状态就变成rejected
+                reject(e);
+            });
+        });
+    });
+}
+
 // ----------------------------------------------------------------------------------------------------------
 // 实现一个promise的延迟对象 deferred
 PromiseSrc.deferred = function () {
